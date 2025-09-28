@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thota Siddartha's Portfolio</title>
-    <!-- Use the Inter font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Include Tailwind CSS from CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLwQ3y8yX9x6z19oNl5zQ80t6K/r8oD7xM8o4j4eE5P8s0X7x7x5p3p15v5O8u/u+N/b/w/v+x/y/y/x/y/x/" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         body {
@@ -18,9 +15,9 @@
             color: #1f2937;
         }
 
-        /* Set scroll-margin-top for anchor links to prevent content from being hidden by the fixed header */
         .section-anchor {
-            scroll-margin-top: 6rem;
+            /* Adjusted for the taller header, was 6rem, changed to 8rem for better scroll */
+            scroll-margin-top: 8rem; 
         }
 
         /* Custom scrollbar for a cleaner look */
@@ -50,25 +47,123 @@
             border-radius: 0.5rem;
             border: 1px solid #34d399;
         }
+
+        /* Popup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease-in-out;
+            /* Added for accessibility - prevents scroll behind the modal */
+            overflow-y: auto; 
+        }
+
+        .modal:target {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: #6b7280;
+            text-decoration: none;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f3f4f6;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #e5e7eb;
+            color: #374151;
+            transform: rotate(90deg);
+        }
+
+        .tech-tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-icon {
+            color: #10b981;
+            margin-right: 0.75rem;
+            margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(-50px) scale(0.8); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        /* Prevent body scroll when modal is open */
+        body:has(.modal:target) {
+            overflow: hidden;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Header Section -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-800 shadow-xl rounded-b-xl mx-2 md:mx-4 lg:mx-auto lg:max-w-7xl transition-all duration-300">
         <nav class="flex items-center justify-between py-6 px-4 md:py-8 md:px-6">
-            <!-- Logo/Name -->
-            <a href="#" class="text-2xl font-bold text-white hover:text-gray-300 transition-colors duration-300">Thota Siddartha</a>
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-700 transition-colors duration-200 text-white">
+            <a href="#" class="text-2xl font-bold text-white hover:text-gray-300 transition-colors duration-300">&ltSiddartha Thota/&gt</a>
+            <button id="mobile-menu-button" aria-label="Toggle navigation menu" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-700 transition-colors duration-200 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu">
                     <line x1="4" x2="20" y1="12" y2="12" />
                     <line x1="4" x2="20" y1="6" y2="6" />
                     <line x1="4" x2="20" y1="18" y2="18" />
                 </svg>
             </button>
-            <!-- Desktop Navigation Links -->
             <ul class="hidden md:flex space-x-6 text-white font-medium">
                 <li><a href="#about" class="hover:text-gray-300 transition-colors duration-200">About</a></li>
                 <li><a href="#education" class="hover:text-gray-300 transition-colors duration-200">Education</a></li>
@@ -79,44 +174,39 @@
                 <li><a href="#contact" class="hover:text-gray-300 transition-colors duration-200">Contact</a></li>
             </ul>
         </nav>
-        <!-- Mobile Menu (hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <ul class="flex flex-col space-y-2 p-4 text-center text-gray-600 font-medium">
-                <li><a href="#about" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">About</a></li>
-                <li><a href="#education" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">Education</a></li>
-                <li><a href="#skills" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">Skills</a></li>
-                <li><a href="#projects" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">Projects</a></li>
-                <li><a href="#publications" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">Publications</a></li>
-                <li><a href="#certifications" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">Certifications</a></li>
-                <li><a href="#contact" class="block py-2 hover:bg-gray-100 rounded-md transition-colors duration-200">Contact</a></li>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-700"> 
+            <ul class="flex flex-col space-y-2 p-4 text-center text-white font-medium">
+                <li><a href="#about" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">About</a></li>
+                <li><a href="#education" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">Education</a></li>
+                <li><a href="#skills" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">Skills</a></li>
+                <li><a href="#projects" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">Projects</a></li>
+                <li><a href="#publications" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">Publications</a></li>
+                <li><a href="#certifications" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">Certifications</a></li>
+                <li><a href="#contact" class="block py-2 hover:bg-gray-600 rounded-md transition-colors duration-200">Contact</a></li>
             </ul>
         </div>
     </header>
 
     <main class="container mx-auto px-4 md:px-6 mt-20 lg:max-w-7xl">
 
-        <!-- About Me Section -->
         <section id="about" class="section-anchor py-16">
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16">
-                <!-- Profile Image - Placeholder -->
                 <div class="flex-shrink-0">
-                    <img src="20240227_122845.jpg" alt="Thota Siddartha's Profile Photo" class="w-64 h-64 rounded-full object-cover shadow-lg transition-transform duration-300 hover:scale-105">
+                    <img src="20240227_122845.jpg" alt="Thota Siddartha's Profile Photo" class="w-72 h-72 rounded-full object-cover shadow-lg transition-transform duration-300 hover:scale-105">
                 </div>
-                <!-- Bio Text -->
                 <div class="text-center md:text-left max-w-2xl">
-                    <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">Hello, I'm <span class="text-blue-600">Thota Siddartha</span>.</h1>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">Hello, I'm <span class="text-blue-600">Siddartha Thota</span>.</h1>
                     <p class="text-lg text-gray-700 leading-relaxed">
-                         I am passionate Software Developer and Data Science enthusiast with a strong focus on deep learning and machine learning. Skilled in Java, Python, SQL, and modern web technologies, I enjoy building scalable applications while applying data-driven techniques to solve real-world problems. My goal is to bridge the gap between software engineering and intelligent systems, creating solutions that are both functional and impactful.
+                            A passionate <strong class="text-blue-600">Data Scientist & Data Analyst</strong> with experience in transforming complex datasets into actionable insights, building predictive models, and driving data-driven decision-making. With a strong foundation in Computer Science and AI, I specialize in applying <strong class="text-purple-600">Machine Learning, Data Analytics, and Visualization</strong> techniques to solve real-world problems and optimize business processes.
+                            I thrive on turning raw data into meaningful insights and automating workflows, using tools and technologies like <strong class="text-green-600">Python, Java, SQL, Excel, Power BI, Tableau</strong>, frameworks like <strong class="text-indigo-600">TensorFlow, Keras, Scikit-Learn, Pandas, NumPy</strong>, and web technologies including <strong class="text-orange-600">HTML, CSS, and JavaScript</strong>. My goal is to help organizations make smarter, data-driven decisions that create measurable impact.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Education Section (New) -->
         <section id="education" class="section-anchor py-16">
             <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Education</h2>
             <div class="bg-white rounded-xl shadow-lg p-8 space-y-8">
-                <!-- Education Entry 1 -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center animate-fade-in-up">
                     <div>
                         <h3 class="text-xl font-bold text-gray-800">Amrita Vishwa Vidyapeetham, Bengaluru</h3>
@@ -128,7 +218,6 @@
                     </div>
                 </div>
 
-                <!-- Education Entry 2 -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center animate-fade-in-up delay-1">
                     <div>
                         <h3 class="text-xl font-bold text-gray-800">Kendriya Vidyalaya Bowenpally</h3>
@@ -140,7 +229,6 @@
                     </div>
                 </div>
 
-                <!-- Education Entry 3 -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center animate-fade-in-up delay-2">
                     <div>
                         <h3 class="text-xl font-bold text-gray-800">Vignan Bo Tree School, Hyderabad</h3>
@@ -151,332 +239,867 @@
                         <p class="text-gray-700 font-semibold">Percentage: 91.4%</p>
                     </div>
                 </div>
-
             </div>
         </section>
  
-        <!-- Skills Section -->
         <section id="skills" class="section-anchor py-16">
-    <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">My Skills</h2>
-    <div class="bg-white rounded-xl shadow-lg p-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">My Skills</h2>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
-                <div class="p-6 rounded-full bg-blue-100 text-blue-600 mb-3 skill-icon-bg">
-                    <i class="fas fa-code text-3xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Programming Languages</h3>
-                <ul class="text-gray-600 space-y-1">   
-                    <li>Java</li>
-                    <li>Python</li>
-                </ul>
-            </div>
+                    <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
+                        <div class="p-6 rounded-full bg-blue-100 text-blue-600 mb-3 skill-icon-bg">
+                            <i class="fas fa-code text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Programming Languages</h3>
+                        <ul class="text-gray-600 space-y-1">   
+                            <li>Java</li>
+                            <li>Python</li>
+                        </ul>
+                    </div>
 
-            <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
-                <div class="p-6 rounded-full bg-yellow-100 text-yellow-600 mb-3 skill-icon-bg">
-                    <i class="fas fa-brain text-3xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Technical Proficiency</h3>
-                <ul class="text-gray-600 space-y-1">
-                    <li>Data Structures and Algorithms</li>
-                    <li>Object-Oriented Programming</li>
-                </ul>
-            </div>
+                    <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
+                        <div class="p-6 rounded-full bg-yellow-100 text-yellow-600 mb-3 skill-icon-bg">
+                            <i class="fas fa-brain text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Technical Proficiency</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>Data Structures and Algorithms</li>
+                            <li>Object-Oriented Programming</li>
+                        </ul>
+                    </div>
 
-            <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
-                <div class="p-6 rounded-full bg-purple-100 text-purple-600 mb-3 skill-icon-bg">
-                    <i class="fas fa-laptop-code text-3xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Web Development</h3>
-                <ul class="text-gray-600 space-y-1">
-                    <li>HTML</li>
-                    <li>CSS</li>
-                    <li>JavaScript</li>
-                </ul>
-            </div>
+                    <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
+                        <div class="p-6 rounded-full bg-purple-100 text-purple-600 mb-3 skill-icon-bg">
+                            <i class="fas fa-laptop-code text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Web Development</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>JavaScript</li>
+                        </ul>
+                    </div>
 
-            <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
-                <div class="p-6 rounded-full bg-teal-100 text-teal-600 mb-3 skill-icon-bg">
-                    <i class="fas fa-chart-line text-3xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Analytics</h3>
-                <ul class="text-gray-600 space-y-1">
-                    <li>Excel</li>
-                </ul>
-            </div>
+                    <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
+                        <div class="p-6 rounded-full bg-teal-100 text-teal-600 mb-3 skill-icon-bg">
+                            <i class="fas fa-chart-line text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Analytics</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>Excel</li>
+                            <li>Power BI</li>
+                            <li>Tableau</li>
+                        </ul>
+                    </div>
 
-            <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
-                <div class="p-6 rounded-full bg-green-100 text-green-600 mb-3 skill-icon-bg">
-                    <i class="fas fa-database text-3xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Databases</h3>
-                <ul class="text-gray-600 space-y-1">
-                    <li>SQL</li>
-                </ul>
-            </div>
+                    <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
+                        <div class="p-6 rounded-full bg-green-100 text-green-600 mb-3 skill-icon-bg">
+                            <i class="fas fa-database text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Databases</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>SQL</li>
+                        </ul>
+                    </div>
 
-            <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
-                <div class="p-6 rounded-full bg-red-100 text-red-600 mb-3 skill-icon-bg">
-                    <i class="fas fa-robot text-3xl"></i>
+                    <div class="flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded-xl p-4">
+                        <div class="p-6 rounded-full bg-red-100 text-red-600 mb-3 skill-icon-bg">
+                            <i class="fas fa-robot text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Artificial Intelligence</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>Machine learning</li>
+                            <li>Deep learning</li>
+                        </ul>
+                    </div>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Artificial Intelligence</h3>
-                <ul class="text-gray-600 space-y-1">
-                    <li>Machine learning</li>
-                    <li>Deep learning</li>
-                </ul>
             </div>
-        </div>
-    </div>
-</section>
-        <!-- Projects Section -->
+        </section>
+
         <section id="projects" class="section-anchor py-16">
             <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">My Projects</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <!-- Project Card: Payroll Management System -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Payroll+Management" alt="Payroll Management System Image" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/10b981/ffffff?text=Data+Analytics" alt="Data-Driven Performance Analysis Image" class="w-full h-48 object-cover" loading="lazy">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Data-Driven Performance Analysis of Food Delivery Operations</h3>
+                        <p class="text-gray-600 text-sm mb-4">Developed comprehensive analytics solution optimizing food delivery operations using advanced Excel techniques on 45,000+ delivery records across 17 key parameters.</p>
+                        <div class="flex gap-2">
+                            <a href="#fooddelivery-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://github.com/ThotaSiddartha" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+                    <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Payroll+Management" alt="Payroll Management System Image" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Payroll Management System</h3>
                         <p class="text-gray-600 text-sm mb-4">Developed a web application for managing employee payroll with functionalities for data management, automated salary calculations, and tax deductions. Designed and implemented the database schema using SQL.</p>
-                        <a href="https://github.com/ThotaSiddartha/Payroll-Management-System" class="inline-flex items-center text-blue-600 hover:underline font-medium" target="_blank">
-                            View Project on GitHub
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1">
-                                <path d="M15 3h6v6" />
-                                <path d="M10 14L21 3" />
-                                <path d="M7 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
-                            </svg>
-                        </a>
+                        <div class="flex gap-2">
+                            <a href="#payroll-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://github.com/ThotaSiddartha/Payroll-Management-System" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Project Card: Y-Visual -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/ef4444/ffffff?text=Y-Visual" alt="Y-Visual Image" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/ef4444/ffffff?text=Y-Visual" alt="Y-Visual Image" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Y-Visual</h3>
                         <p class="text-gray-600 text-sm mb-4">Created a front-end prototype of YouTube, replicating the user interface with modern web standards (HTML, CSS). Used responsive design techniques like media queries and Flexbox for optimal user experience.</p>
-                        <a href="https://github.com/ThotaSiddartha/Y-Visual" class="inline-flex items-center text-blue-600 hover:underline font-medium" target="_blank">
-                            View Project on GitHub
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1">
-                                <path d="M15 3h6v6" />
-                                <path d="M10 14L21 3" />
-                                <path d="M7 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
-                            </svg>
-                        </a>
+                        <div class="flex gap-2">
+                            <a href="#yvisual-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://github.com/ThotaSiddartha/Y-Visual" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Project Card: Train Reservation System -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/22c55e/ffffff?text=Train+Reservation" alt="Train Reservation System Image" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/22c55e/ffffff?text=Train+Reservation" alt="Train Reservation System Image" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Train Reservation System</h3>
                         <p class="text-gray-600 text-sm mb-4">Designed and implemented a train reservation system inspired by IRCTC using Java. Utilized arrays for efficient data management and enhanced Object-Oriented Programming (OOP) skills through system architecture design.</p>
-                        <a href="https://github.com/ThotaSiddartha" class="inline-flex items-center text-blue-600 hover:underline font-medium" target="_blank">
-                            View Project on GitHub
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1">
-                                <path d="M15 3h6v6" />
-                                <path d="M10 14L21 3" />
-                                <path d="M7 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
-                            </svg>
-                        </a>
+                        <div class="flex gap-2">
+                            <a href="#train-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://github.com/ThotaSiddartha" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Project Card: Fraud Transaction Detection -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/9b2c2c/ffffff?text=Fraud+Detection" alt="Fraud Transaction Detection Image" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/9b2c2c/ffffff?text=Fraud+Detection" alt="Fraud Transaction Detection Image" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Fraud Transaction Detection</h3>
                         <p class="text-gray-600 text-sm mb-4">Developed a machine learning solution that greatly enhanced the accuracy of detecting fraudulent transactions. Applied and optimized boosting algorithms to enhance classification techniques, contributing to stronger financial security.</p>
-                        <a href="https://github.com/ThotaSiddartha" class="inline-flex items-center text-blue-600 hover:underline font-medium" target="_blank">
-                            View Project on GitHub
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1">
-                                <path d="M15 3h6v6" />
-                                <path d="M10 14L21 3" />
-                                <path d="M7 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
-                            </svg>
-                        </a>
+                        <div class="flex gap-2">
+                            <a href="#fraud-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://github.com/ThotaSiddartha" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- Publications Section -->
         <section id="publications" class="section-anchor py-16">
             <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Publications</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <!-- Publication Card 1 -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Publication+1" alt="Publication 1 Placeholder Image" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/10b981/ffffff?text=Maize+Disease" alt="Maize Disease Detection Publication" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Paddy Leaf Disease Detection using Fine-Tuned Efficient NetB4 CNN</h3>
-                        <p class="text-gray-600 text-sm mb-4">Developed a Paddy Leaf Disease Detection system using a fine-tuned Efficient NetB4 CNN model, achieving an impressive accuracy of 99.75% in classifying various plant diseases and improving agricultural management practices.</p>
-                        <a href="https://ieeexplore.ieee.org/document/10726047" class="inline-flex items-center text-blue-600 hover:underline font-medium" target="_blank">
-                            View Publication
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1">
-                                <path d="M15 3h6v6" />
-                                <path d="M10 14L21 3" />
-                                <path d="M7 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
-                            </svg>
-                        </a>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Leveraging EfficientNetB4 Model with Multi-head Attentions for Maize Leaf Disease Detection</h3>
+                        <p class="text-gray-600 text-sm mb-4">2nd International Conference on Applied Algorithms (ICAA 2025) · Apr 1, 2025. Developed an AI-powered automated system achieving 96.75% F1-score for early maize disease detection using advanced deep learning with multi-head attention mechanisms.</p>
+                        <div class="flex gap-2">
+                            <a href="#pub1-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://link.springer.com/chapter/10.1007/978-3-031-84543-7_22#:~:text=Among%20the%20evaluated%20combinations%20of,96.75%25%20on%20the%20test%20set%2C" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                View Publication
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Publication Card 2 -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/22c55e/ffffff?text=Publication+2" alt="Publication 2 Placeholder Image" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Paddy+Disease" alt="Paddy Disease Detection Publication" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Leveraging Efficient NetB4 Model with Multi-head Attentions for Maize Leaf Disease Detection</h3>
-                        <p class="text-gray-600 text-sm mb-4">Developed a novel CNN model using Efficient Net-B4 and multi-head attention for accurate maize leaf disease classification, achieving an F1-score of 96.75%, enhancing early disease detection to support smart agriculture.</p>
-                        <a href="https://link.springer.com/chapter/10.1007/978-3-031-84543-7_22#:~:text=Among%20the%20evaluated%20combinations%20of,96.75%25%20on%20the%20test%20set%2C" class="inline-flex items-center text-blue-600 hover:underline font-medium" target="_blank">
-                            View Publication
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1">
-                                <path d="M15 3h6v6" />
-                                <path d="M10 14L21 3" />
-                                <path d="M7 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
-                            </svg>
-                        </a>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Paddy Leaf Disease Detection Using Fine-tuned EfficientNetB4 Convolutional Neural Network</h3>
+                        <p class="text-gray-600 text-sm mb-4">International Conference on Computing and Networking Technology (ICCNT) · Jun 24, 2024. Developed an AI-powered automated system achieving 99.75% accuracy in paddy leaf disease classification using advanced deep learning techniques.</p>
+                        <div class="flex gap-2">
+                            <a href="#pub2-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                View Details
+                            </a>
+                            <a href="https://ieeexplore.ieee.org/document/10726047" class="text-blue-600 hover:text-blue-800 px-4 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                                View Publication
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Certifications Section -->
-        <section id="certifications" class="section-anchor py-16">
-            <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Certifications</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <section id="certifications" class="section-anchor py-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Certifications</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <!-- Certification Card 1 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/60a5fa/ffffff?text=Front+End+Developer" alt="Front End Web Developer Certification" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Front End Web Developer Certification</h3>
-                        <p class="text-gray-600 text-sm mb-4">A certification from Infosys SpringBoard, demonstrating proficiency in front-end web development principles and practices.</p>
-                        <p class="text-gray-500 text-xs text-right mt-4">Issued: Sep 2024</p>
+            <!-- Infosys SpringBoard Certification -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+                <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center relative overflow-hidden">
+                    <!-- Logo placeholder - replace with actual Infosys SpringBoard logo -->
+                    <div class="text-white text-center">
+                        <div class="text-4xl font-bold mb-2">Infosys</div>
+                        <div class="text-xl font-light">SpringBoard</div>
+                        <div class="text-sm mt-2 opacity-80">Front End Developer</div>
                     </div>
+                    <!-- Decorative elements -->
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full"></div>
+                    <div class="absolute bottom-4 left-4 w-8 h-8 bg-white/10 rounded-full"></div>
                 </div>
-
-                <!-- Certification Card 2 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/94a3b8/ffffff?text=Problem+Solving" alt="HackerRank Problem Solving Certification" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Problem Solving</h3>
-                        <p class="text-gray-600 text-sm mb-4">A HackerRank certification that validates strong problem-solving skills and expertise in data structures and algorithms.</p>
-                        <p class="text-gray-500 text-xs text-right mt-4">Issued: Apr 2024</p>
-                    </div>
-                </div>
-
-                <!-- Certification Card 3 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/f87171/ffffff?text=SQL" alt="HackerRank SQL Certification" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">SQL</h3>
-                        <p class="text-gray-600 text-sm mb-4">A HackerRank certification that confirms proficiency in Structured Query Language (SQL) for database management and querying.</p>
-                        <p class="text-gray-500 text-xs text-right mt-4">Issued: Jun 2024</p>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Front End Web Developer Certification</h3>
+                    <p class="text-gray-600 text-sm mb-4">A certification from Infosys SpringBoard, demonstrating proficiency in front-end web development principles and practices.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Infosys SpringBoard</span>
+                        <p class="text-gray-500 text-xs">Sep 2024</p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Contact Section -->
-        <!-- <section id="contact" class="section-anchor py-16">
+            <!-- HackerRank Problem Solving -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+                <div class="h-48 bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center relative overflow-hidden">
+                    <!-- Logo placeholder - replace with actual HackerRank logo -->
+                    <div class="text-white text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-white rounded-lg flex items-center justify-center">
+                            <div class="text-green-600 text-2xl font-bold">HR</div>
+                        </div>
+                        <div class="text-xl font-bold">HackerRank</div>
+                        <div class="text-sm mt-1 opacity-80">Problem Solving</div>
+                    </div>
+                    <!-- Hexagon pattern (HackerRank's signature) -->
+                    <div class="absolute top-3 right-3 w-6 h-6 bg-white/20 transform rotate-45"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 bg-white/20 transform rotate-45"></div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Problem Solving</h3>
+                    <p class="text-gray-600 text-sm mb-4">A HackerRank certification that validates strong problem-solving skills and expertise in data structures and algorithms.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">HackerRank</span>
+                        <p class="text-gray-500 text-xs">Apr 2024</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HackerRank SQL -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+                <div class="h-48 bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center relative overflow-hidden">
+                    <!-- Logo placeholder - replace with actual HackerRank logo -->
+                    <div class="text-white text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-white rounded-lg flex items-center justify-center">
+                            <div class="text-red-600 text-2xl font-bold">HR</div>
+                        </div>
+                        <div class="text-xl font-bold">HackerRank</div>
+                        <div class="text-sm mt-1 opacity-80">SQL</div>
+                    </div>
+                    <!-- Database icon representation -->
+                    <div class="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full"></div>
+                    <div class="absolute bottom-4 left-4 w-6 h-6 bg-white/20 rounded-full"></div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">SQL</h3>
+                    <p class="text-gray-600 text-sm mb-4">A HackerRank certification that confirms proficiency in Structured Query Language (SQL) for database management and querying.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">HackerRank</span>
+                        <p class="text-gray-500 text-xs">Jun 2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <section id="contact" class="py-16 bg-gray-50 section-anchor">
             <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Get in Touch</h2>
+
             <div class="flex justify-center">
                 <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg">
                     <p class="text-center text-gray-600 mb-6 text-lg">
                         Feel free to contact me via email or connect with me on social media.
                     </p>
-                    <ul class="flex justify-center space-x-8 mb-6">
-                        <li>
-                            <a href="mailto:tsnsiddhu@gmail.com" class="text-gray-600 hover:text-blue-600 transition-colors duration-200" title="Email">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
-                                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.linkedin.com/in/thota-siddartha" class="text-gray-600 hover:text-blue-600 transition-colors duration-200" target="_blank" title="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
-                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                                    <rect width="4" height="12" x="2" y="9" />
-                                    <circle cx="4" cy="4" r="2" />
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/ThotaSiddartha" class="text-gray-600 hover:text-blue-600 transition-colors duration-200" target="_blank" title="GitHub">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
-                                    <path d="M15 22s-4 0-5 2c-2 0-2-3-3-3a5.5 5.5 0 0 0-3 3c0 2-2 3-3 3-2 0-3-1-3-3a6.5 6.5 0 0 1 4-5.5c-2-1-2-2-2-4-1-2 0-4 2-5s4 0 5 2c1 0 2-1 3-2s2-1 3 0c1 1 2 2 2 3a4 4 0 0 1 1.5 2.5c1 1 2 1 3 1s2-1 2-2a4 4 0 0 0 1.5-2.5c1-1 2-1 3 0s2 1 2 2c0 2-2 3-3 3a5.5 5.5 0 0 0-3-3c-1 0-2-1-3-1-2 0-2 1-3 1.5a5.5 5.5 0 0 0 3 3z" />
-                                    <path d="M9 19c-3 0-5.5-2.5-5.5-5.5S6.5 8 9 8s5.5 2.5 5.5 5.5S12 19 9 19z" />
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
+
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold text-center text-gray-800 mb-4">Connect with Me</h3>
+                        <ul class="flex justify-center space-x-8">
+                            <li>
+                                <a href="mailto:tsnsiddhu@gmail.com" aria-label="Email Thota Siddartha" class="text-gray-600 hover:text-blue-600 transition-colors duration-200" title="tsnsiddhu@gmail.com">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.linkedin.com/in/thota-siddartha" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+                                    </svg>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/ThotaSiddartha" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" class="text-gray-600 hover:text-black transition-colors duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
+                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577v-2.234c-3.338.724-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.606-2.665-.304-5.467-1.333-5.467-5.932 0-1.31.468-2.382 1.235-3.222-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.29-1.552 3.296-1.23 3.296-1.23.653 1.653.242 2.873.119 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.625-5.48 5.922.43.372.815 1.103.815 2.222v3.293c0 .319.218.694.825.576C20.565 21.797 24 17.303 24 12c0-6.63-5.373-12-12-12z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </section> -->
-
-        <section id="contact" class="py-16 bg-gray-50">
-  <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Get in Touch</h2>
-
-  <div class="flex justify-center">
-    <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg">
-      <p class="text-center text-gray-600 mb-6 text-lg">
-        Feel free to contact me via email or connect with me on social media.
-      </p>
-
-      <ul class="flex justify-center space-x-8 mb-6">
-        <!-- Email -->
-        <li>
-          <a href="mailto:tsnsiddhu@gmail.com" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-          </a>
-        </li>
-
-        <!-- LinkedIn -->
-        <li>
-          <a href="https://www.linkedin.com/in/thota-siddartha" target="_blank" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
-            </svg>
-          </a>
-        </li>
-
-        <!-- GitHub -->
-        <li>
-          <a href="https://github.com/ThotaSiddartha" target="_blank" class="text-gray-600 hover:text-black transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577v-2.234c-3.338.724-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.606-2.665-.304-5.467-1.333-5.467-5.932 0-1.31.468-2.382 1.235-3.222-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.29-1.552 3.296-1.23 3.296-1.23.653 1.653.242 2.873.119 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.625-5.48 5.922.43.372.815 1.103.815 2.222v3.293c0 .319.218.694.825.576C20.565 21.797 24 17.303 24 12c0-6.63-5.373-12-12-12z"/>
-            </svg>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-        
+        </section>
 
     </main>
 
-    <!-- Footer Section -->
     <footer class="bg-gray-800 text-white text-center py-6 mt-16 rounded-t-xl mx-2 md:mx-4 lg:mx-auto lg:max-w-7xl">
         <p>&copy; 2021 Thota Siddartha. All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript for dynamic behavior -->
+    <div id="fooddelivery-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Data-Driven Performance Analysis of Food Delivery Operations</h2>
+            
+            <div class="mb-6">
+                <img src="https://placehold.co/600x300/10b981/ffffff?text=Analytics+Dashboard" alt="Food Delivery Analytics Demo" class="w-full rounded-lg shadow-md" loading="lazy">
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Project Duration</h3>
+                <p class="text-gray-600">Aug 2025 - Sep 2025</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Technologies Used</h3>
+                <div class="flex flex-wrap">
+                    <span class="tech-tag">Advanced Excel</span>
+                    <span class="tech-tag">Data Analytics</span>
+                    <span class="tech-tag">Pivot Tables</span>
+                    <span class="tech-tag">Dashboard Development</span>
+                    <span class="tech-tag">Statistical Analysis</span>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Project Overview</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Developed comprehensive analytics solution optimizing food delivery operations using advanced Excel techniques on 45,000+ delivery records.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">🔍 Project Scope</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Analyzed delivery performance across 17 key parameters including delivery times, customer ratings, weather conditions, traffic density, geographic locations, and order types.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">⚙️ Technical Implementation</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Extensive data cleaning: time format conversion, handling missing values, dataset standardization</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Custom categorization formulas using advanced IF and WEEKDAY functions for delivery patterns (Morning/Night, Weekend/Weekday)</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Automated KPI calculation systems for delivery metrics and performance benchmarking</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Conditional formatting for highlighting performance trends, outliers, and critical insights</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">📊 Key Deliverables</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Interactive pivot tables and pivot charts for dynamic data exploration and multi-dimensional analysis</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Comprehensive dashboards visualizing delivery trends, ratings analysis, and operational performance</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Heatmaps analyzing average delivery ratings across weather conditions and traffic density levels</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Monthly delivery trend analysis identifying seasonal patterns and demand fluctuations</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Festival time analysis comparing delivery performance during festival vs non-festival periods</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Performance scorecards for delivery personnel and geographic regions</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">💡 Business Impact</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Identified peak delivery periods enabling optimal staff allocation and resource planning</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Provided data-driven insights for strategic pricing and promotional campaign timing</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Delivered actionable recommendations for operational efficiency improvements across metropolitan, urban, and semi-urban areas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">🎯 Results</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Transformed raw operational data into strategic business intelligence, enabling informed decisions about resource allocation, pricing strategies, and customer experience optimization.
+                </p>
+            </div>
+            
+            <div class="flex gap-4">
+                <a href="https://github.com/ThotaSiddartha" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fab fa-github mr-2"></i>View on GitHub
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="payroll-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Payroll Management System</h2>
+            
+            <div class="mb-6">
+                <img src="https://placehold.co/600x300/3b82f6/ffffff?text=Payroll+System+Demo" alt="Payroll System Demo" class="w-full rounded-lg shadow-md" loading="lazy">
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Technologies Used</h3>
+                <div class="flex flex-wrap">
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JavaScript</span>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Project Overview</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Developed a web application for managing employee payroll with functionalities for data management, automated salary calculations, and tax deductions. Designed and implemented the database schema using SQL.
+                </p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Key Features</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Employee data management and record keeping</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Automated salary calculations with overtime support</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Tax deduction calculations based on current regulations</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Payslip generation and reporting features</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Secure database integration with SQL</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <a href="https://github.com/ThotaSiddartha/Payroll-Management-System" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fab fa-github mr-2"></i>View on GitHub
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="yvisual-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Y-Visual - YouTube Clone</h2>
+            
+            <div class="mb-6">
+                <img src="https://placehold.co/600x300/ef4444/ffffff?text=YouTube+Clone+Interface" alt="Y-Visual Demo" class="w-full rounded-lg shadow-md" loading="lazy">
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Technologies Used</h3>
+                <div class="flex flex-wrap">
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Flexbox</span>
+                    <span class="tech-tag">Responsive Design</span>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Project Overview</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Created a front-end prototype of YouTube, replicating the user interface with modern web standards (HTML, CSS). Used responsive design techniques like media queries and Flexbox for optimal user experience.
+                </p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Key Features</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Responsive navigation bar with search functionality</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Video grid layout with hover effects</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Sidebar navigation with collapsible menu</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Mobile-responsive design using media queries</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Modern CSS techniques including Flexbox and Grid</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <a href="https://github.com/ThotaSiddartha/Y-Visual" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fab fa-github mr-2"></i>View on GitHub
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="train-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Train Reservation System</h2>
+            
+            <div class="mb-6">
+                <img src="https://placehold.co/600x300/22c55e/ffffff?text=Train+Booking+System" alt="Train Reservation Demo" class="w-full rounded-lg shadow-md" loading="lazy">
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Technologies Used</h3>
+                <div class="flex flex-wrap">
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">OOP</span>
+                    <span class="tech-tag">Data Structures</span>
+                    <span class="tech-tag">Arrays</span>
+                    <span class="tech-tag">Console Application</span>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Project Overview</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Designed and implemented a train reservation system inspired by IRCTC using Java. Utilized arrays for efficient data management and enhanced Object-Oriented Programming (OOP) skills through system architecture design.
+                </p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Key Features</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Train search and availability checking</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Seat reservation and booking management</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Passenger information management</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Booking cancellation and refund system</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Real-time seat availability tracking</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Multiple train routes and scheduling</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Technical Highlights</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    This project showcases advanced Java programming concepts including inheritance, polymorphism, encapsulation, and abstraction. The system uses efficient array-based data structures for managing train schedules, passenger records, and booking information.
+                </p>
+            </div>
+            
+            <div class="flex gap-4">
+                <a href="https://github.com/ThotaSiddartha" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fab fa-github mr-2"></i>View on GitHub
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="fraud-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Fraud Transaction Detection</h2>
+            
+            <div class="mb-6">
+                <img src="https://placehold.co/600x300/9b2c2c/ffffff?text=ML+Fraud+Detection" alt="Fraud Detection Demo" class="w-full rounded-lg shadow-md" loading="lazy">
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Technologies Used</h3>
+                <div class="flex flex-wrap">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Scikit-learn</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">NumPy</span>
+                    <span class="tech-tag">Machine Learning</span>
+                    <span class="tech-tag">Boosting Algorithms</span>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Project Overview</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Developed a machine learning solution that greatly enhanced the accuracy of detecting fraudulent transactions. Applied and optimized boosting algorithms to enhance classification techniques, contributing to stronger financial security.
+                </p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Key Features</h3>
+                <div class="space-y-2">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Advanced feature engineering and data preprocessing</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Implementation of boosting algorithms (XGBoost, AdaBoost)</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Real-time fraud detection capabilities</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Model performance optimization and hyperparameter tuning</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Comprehensive evaluation metrics and validation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Handling of imbalanced datasets using SMOTE</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Results & Impact</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Achieved significant improvement in fraud detection accuracy through optimized boosting algorithms. The model demonstrates excellent performance in identifying fraudulent patterns while minimizing false positives.
+                </p>
+            </div>
+            
+            <div class="flex gap-4">
+                <a href="https://github.com/ThotaSiddartha" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fab fa-github mr-2"></i>View on GitHub
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="pub1-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">🌽 Leveraging EfficientNetB4 Model with Multi-head Attentions for Maize Leaf Disease Detection</h2>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">📅 Publication Date:</h3>
+                <p class="text-gray-600">September 2025</p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">📖 Description:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    🚀 Developed an AI-powered automated system for early detection of maize leaf diseases using advanced deep learning with multi-head attention mechanisms. This research addresses critical challenges in corn cultivation that significantly impact global food security, as maize serves as a staple crop for millions worldwide.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">🎯 Key Contributions:</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                    <li>🤖 Novel integration of <strong>EfficientNetB4</strong> with <strong>multi-head attention</strong> achieving <strong>96.75% F1-score</strong> and <strong>96.63% accuracy</strong> in disease classification.</li>
+                    <li>📊 Comprehensive comparative analysis of 5 state-of-the-art CNN architectures (EfficientNetB4, DenseNet201, InceptionV3, MobileNetV3, XceptionNet).</li>
+                    <li>📸 Trained and validated models on 4,000 maize leaf images across 4 disease categories: Bercak Daun, Daun Sehat, Hawar Sehat, and Karat Sehat.</li>
+                    <li>🏆 Achieved <strong>3%+ improvement</strong> over existing state-of-the-art methods across all evaluation metrics.</li>
+                    <li>⚡ Optimized multi-head attention with 8 attention heads and key_dim=64 for maximum feature extraction.</li>
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">🔧 Technical Approach:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    🧠 Employed transfer learning with compound scaling, strategic dense layers and data augmentation techniques. The fine-tuned model with dual attention layers outperformed all competing architectures.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">💡 Impact:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    🌱 Enables farmers to identify crop diseases (grey leaf spot, maize rust, northern blight) early, preventing significant agricultural losses and supporting food security through precision agriculture technologies.
+                </p>
+            </div>
+            
+            <div class="mb-6 border-t pt-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Conference Details:</h3>
+                <p class="text-gray-600">🏢 Conference: 🎓 International Conference Proceedings</p>
+                <p class="text-gray-600">📋 Type: ✅ Peer-reviewed Conference Paper</p>
+                <p class="text-gray-600">🔬 Domain: 👁️ Computer Vision, 🧠 Deep Learning, 🚜 Smart Agriculture</p>
+            </div>
+            
+            <div class="flex gap-4">
+                <a href="https://link.springer.com/chapter/10.1007/978-3-031-84543-7_22#:~:text=Among%20the%20evaluated%20combinations%20of,96.75%25%20on%20the%20test%20set%2C" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fas fa-external-link-alt mr-2"></i>View Publication
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="pub2-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn" aria-label="Close modal">&times;</a>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">📚 🌾 Paddy Leaf Disease Detection Using Fine-tuned EfficientNetB4 Convolutional Neural Network</h2>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">📅 Publication Date:</h3>
+                <p class="text-gray-600">June 2024</p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">📖 Description:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    🚀 Developed an AI-powered automated system for early detection of paddy leaf diseases using advanced deep learning techniques. This research addresses critical challenges in rice cultivation that affect global food security, as rice serves as a staple food for over half the world's population.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">🎯 Key Contributions:</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                    <li>🤖 Implemented and fine-tuned <strong>EfficientNetB4</strong> Convolutional Neural Network achieving <strong>99.75% accuracy</strong> in disease classification.</li>
+                    <li>📊 Conducted comprehensive comparative analysis of 5 state-of-the-art CNN architectures (EfficientNetB4, MobileNetV3, DenseNet201, InceptionNetV3, XceptionNet).</li>
+                    <li>📸 Trained and validated models on dataset of 5,932 paddy leaf images across 4 major disease categories: Bacterial Blight, Blast, Brown Spot, and Tungro.</li>
+                    <li>🏆 Achieved exceptional F1-score of <strong>99.74%</strong> with perfect classification for Blast and Brown Spot diseases.</li>
+                    <li>⚡ Demonstrated significant improvement over traditional manual detection methods.</li>
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">🔧 Technical Approach:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    🧠 Employed transfer learning with compound scaling methodology, custom dense layers, and data augmentation techniques. The fine-tuned EfficientNetB4 model outperformed all competing architectures with lowest test loss (<strong>0.0097</strong>) and highest accuracy metrics across precision, recall, and F1-score.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">💡 Impact:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    🌱 This automated disease detection system enables farmers to identify crop diseases early, potentially reducing significant agricultural losses and supporting global food security initiatives through precision agriculture technologies.
+                </p>
+            </div>
+
+            <div class="mb-6 border-t pt-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Conference Details:</h3>
+                <p class="text-gray-600">🏢 Conference: 🎓 IEEE ICCCNT 2024, IIT Mandi, India</p>
+                <p class="text-gray-600">📋 Publication Type: ✅ Peer-reviewed Conference Paper</p>
+                <p class="text-gray-600">🔬 Research Domain: 👁️ Computer Vision, 🧠 Deep Learning, 🚜 Precision Agriculture</p>
+            </div>
+
+            <div class="flex gap-4">
+                <a href="https://ieeexplore.ieee.org/document/10726047" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                    <i class="fas fa-external-link-alt mr-2"></i>View Publication
+                </a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors duration-200">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Handle the mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.querySelectorAll('#mobile-menu a, .hidden.md\\:flex a');
+        // Select links from both desktop and mobile for hiding the menu
+        const navLinks = document.querySelectorAll('#mobile-menu a, .hidden.md\\:flex a'); 
 
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
@@ -491,41 +1114,31 @@
             });
         });
 
-        // Handle a placeholder form submission logic (no actual backend)
-        const contactForm = document.getElementById('contact-form');
-        const formMessage = document.getElementById('form-message');
+        // Close modal when clicking outside or on close button
+        document.addEventListener('click', (e) => {
+            // Check if the target is the modal backdrop or the close button
+            if (e.target.classList.contains('modal') || e.target.classList.contains('close-btn')) {
+                // Remove the hash from the URL to close the modal (using the :target trick)
+                window.location.hash = '';
+            }
+        });
 
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault(); // Prevent the default form submission
-
-                // Create and show a success message box
-                const messageBox = document.createElement('div');
-                messageBox.className = 'message-box mt-4';
-                messageBox.textContent = 'Thank you for your message! I will get back to you soon.';
-
-                formMessage.innerHTML = '';
-                formMessage.appendChild(messageBox);
-                formMessage.classList.remove('hidden');
-
-                // You can add your actual form submission logic here (e.g., using fetch to a backend service)
-                // For now, we'll just log the data to the console
-                const formData = new FormData(contactForm);
-                const data = Object.fromEntries(formData.entries());
-                console.log('Form data submitted:', data);
-
-                // Reset the form and hide the message after a short delay
-                setTimeout(() => {
-                    contactForm.reset();
-                    formMessage.classList.add('hidden');
-                    formMessage.innerHTML = '';
-                }, 3000);
+        // Prevent modal close when clicking inside modal content
+        document.querySelectorAll('.modal-content').forEach(content => {
+            content.addEventListener('click', (e) => {
+                e.stopPropagation(); // Stop the event from bubbling up to the document click listener
             });
-        }
+        });
+
+        // Handle ESC key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.location.hash = '';
+            }
+        });
+
+        
     </script>
 </body>
 
 </html>
-
-
-
